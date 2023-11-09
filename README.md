@@ -115,9 +115,14 @@ you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst 
    1. input_test : `../data/elo_ranges/${elo}/test/*/*`
    2. output_train : `../data/elo_ranges/${elo}/train/*/*`
    3. make sure that you write the full path and not the relative path, because it creates problems depending from where you run the python script,
-      so for example: ```/home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*```
+      so for example: ```
+                     /home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*
+                     ```
 5. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
-56 (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` - for example ```bash tensorboard --logdir=runs``` 
+6. (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` example:
+ ```bash
+   tensorboard --logdir=runs
+```
 We also include some other (but not all) config files that we tested. Although, we still recommend using the final config `move_prediction/maia_config.yml`.
 
 If you wish to generate the testing set we used you can download the December 2019 data and run `move_prediction/replication-make_testing_pgns.sh`. The data is also avaible for download as a CSV [here](http://csslab.cs.toronto.edu/data/chess/kdd/maia-chess-testing-set.csv.bz2). The script for running models on the dataset is [`replication-run_model_on_csv.py`](move_prediction/replication-run_model_on_csv.py) and requires the `lc0` binary on the path.
