@@ -103,13 +103,19 @@ To train the models we present in the paper you need to download the raw files f
 ~Also note that running the scripts manually line by line might be necessary as they do not have any flow control logic because we were too lazy to implement it. And that `move_prediction/replication-move_training_set.py` is where the main shuffling and games selection logic is.~
 
 **Flow control logic is now implemented.**
-
-1. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
+1. Setup your environment
+   1. (mendatory) Install the `conda` environment, [`maia_env.yml`](maia_env.yml)
+   2. Make sure all the required packages are installed from `requirements.txt`
+2. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
+3. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh`.
+you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **DO NOT keep them in `data/lichess_raw`**
 2. Run `move_prediction/replication-generate_pgns.sh`
 3. Run `move_prediction/replication-make_leela_files.sh`
 4. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
-   1. input_test : `../data/elo_ranges/${elo}/test`
-   2. output_train : `../data/elo_ranges/${elo}/train`
+   1. input_test : `../data/elo_ranges/${elo}/test/*/*`
+   2. output_train : `../data/elo_ranges/${elo}/train/*/*`
+   3. make sure that you write the full path and not the relative path, because it creates problems depending from where you run the python script,
+      so for example: '/home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*'
 5. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
 
 We also include some other (but not all) config files that we tested. Although, we still recommend using the final config `move_prediction/maia_config.yml`.
