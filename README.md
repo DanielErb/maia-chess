@@ -104,20 +104,20 @@ To train the models we present in the paper you need to download the raw files f
 
 **Flow control logic is now implemented.**
 1. Setup your environment
-   1. (mendatory) Install the `conda` environment, [`maia_env.yml`](maia_env.yml)
+   1. (mendatory) Install the `conda` environment, [`maia_env.yml`](maia_env.yml) - you will need to work with it the entire time so dont forget to activate
    2. Make sure all the required packages are installed from `requirements.txt`
 2. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
 3. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh`.
-you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **DO NOT keep them in `data/lichess_raw`**
+you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
 2. Run `move_prediction/replication-generate_pgns.sh`
 3. Run `move_prediction/replication-make_leela_files.sh`
 4. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
    1. input_test : `../data/elo_ranges/${elo}/test/*/*`
    2. output_train : `../data/elo_ranges/${elo}/train/*/*`
    3. make sure that you write the full path and not the relative path, because it creates problems depending from where you run the python script,
-      so for example: '/home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*'
+      so for example: ```/home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*```
 5. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
-
+56 (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` - for example ```bash tensorboard --logdir=runs``` 
 We also include some other (but not all) config files that we tested. Although, we still recommend using the final config `move_prediction/maia_config.yml`.
 
 If you wish to generate the testing set we used you can download the December 2019 data and run `move_prediction/replication-make_testing_pgns.sh`. The data is also avaible for download as a CSV [here](http://csslab.cs.toronto.edu/data/chess/kdd/maia-chess-testing-set.csv.bz2). The script for running models on the dataset is [`replication-run_model_on_csv.py`](move_prediction/replication-run_model_on_csv.py) and requires the `lc0` binary on the path.
