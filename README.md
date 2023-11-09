@@ -110,7 +110,10 @@ To train the models we present in the paper you need to download the raw files f
 3. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh`.
 you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
 2. Run `move_prediction/replication-generate_pgns.sh`
-3. Run `move_prediction/replication-make_leela_files.sh`
+3. Run `move_prediction/replication-make_leela_files.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
+wont see anything on the screen and it might appear stuck, if you wish to view a ceratin screen and how its working, open a new terminal and type the name of the screen with the command `screen -r <"screen name">`.
+You can see how screen names are defined in the scripts.
+Make sure you dont press `Ctrl + c` if you open a new terminal to view a screen because it will simply terminate it. Flow control has been emplaced so you dont need to worry and the program will continue running the next commands once the screens have finished.
 4. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
    1. input_test : `../data/elo_ranges/${elo}/test/*/*`
    2. output_train : `../data/elo_ranges/${elo}/train/*/*`
