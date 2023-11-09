@@ -100,7 +100,8 @@ To create your own maia from a set of chess games in the PGN format:
 
 To train the models we present in the paper you need to download the raw files from Lichess then cut them into the training sets and process them into the training data format. This is a similar format to the general training instructions just with our specified data, so you will need to have `trainingdata-tool` and `pgn-extract` on your PATH.
 
-Also note that running the scripts manually line by line might be necessary as they do not have any flow control logic. And that `move_prediction/replication-move_training_set.py` is where the main shuffling and games selection logic is.
+~Also note that running the scripts manually line by line might be necessary as they do not have any flow control logic because we were too lazy. And that `move_prediction/replication-move_training_set.py` is where the main shuffling and games selection logic is.~
+**flow control logic is now implemented.**
 
 1. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
 2. Run `move_prediction/replication-generate_pgns.sh`
