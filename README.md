@@ -109,9 +109,9 @@ To train the models we present in the paper you need to download the raw files f
 2. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
 3. (Optional) For simplicity - Give the entire directory running permissions `chmod -R +x directory_name` - otherwise give only to scripts which you run (do notice that some scripts run others so you will need to inspect the code and
 see which one need executing/reading writing permissions).
-4. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh` - make sure you have 
+4. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/convert-zst.sh` - make sure you have 
 packages `bzip2` and `zstd`.
-you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
+you will be left with both .pgn.zst and .bz2 files, you can store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
 5. Run `move_prediction/replication-generate_pgns.sh`
 6. Run `move_prediction/replication-make_leela_files.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
 wont see anything on the screen and it might appear stuck, if you wish to view a ceratin screen and how its working, open a new terminal and type the name of the screen with the command `screen -r <"screen name">`.
