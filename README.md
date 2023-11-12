@@ -107,7 +107,8 @@ To train the models we present in the paper you need to download the raw files f
    1. Install the `conda` environment, [`maia_env.yml`](maia_env.yml) - you will need to work with it the entire time so dont forget to activate
    2. Make sure all the required packages are installed from `requirements.txt`
 2. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
-3. (Optional) For simplicity - Give the entire directory running permissions `chmod -R +x directory_name`   
+3. (Optional) For simplicity - Give the entire directory running permissions `chmod -R +x directory_name` - otherwise give only to scripts which you run (do notice that some scripts run others so you will need to inspect the code and
+see which one need executing/reading writing permissions).
 4. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh` - make sure you have 
 packages `bzip2` and `zstd`.
 you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
