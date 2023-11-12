@@ -113,7 +113,8 @@ see which one need executing/reading writing permissions).
 packages `bzip2` and `zstd`.
 you will be left with both .pgn.zst and .bz2 files, you can store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
 5. Run `move_prediction/replication-generate_pgns.sh`
-6. Run `move_prediction/replication-make_leela_files.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
+   1. (optional) - If you wish to run Maia on other data rather than 2017-2019, you will need to modify `move_prediction/replication-generate_pgns.sh` and `move_prediction/replication-move_training_set.py`.
+6. Run `move_prediction/replication-make_leela_files-fixed.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
 wont see anything on the screen and it might appear stuck, if you wish to view a ceratin screen and how its working, open a new terminal and type the name of the screen with the command `screen -r <"screen name">`.
 You can see how screen names are defined in the scripts.
 Make sure you dont press `Ctrl + c` if you open a new terminal to view a screen because it will simply terminate it. Flow control has been emplaced so you dont need to worry and the program will continue running the next commands once the screens have finished.
