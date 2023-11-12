@@ -104,26 +104,27 @@ To train the models we present in the paper you need to download the raw files f
 
 **Flow control logic is now implemented.**
 1. Setup your environment
-   1. (mendatory) Install the `conda` environment, [`maia_env.yml`](maia_env.yml) - you will need to work with it the entire time so dont forget to activate
+   1. Install the `conda` environment, [`maia_env.yml`](maia_env.yml) - you will need to work with it the entire time so dont forget to activate
    2. Make sure all the required packages are installed from `requirements.txt`
 2. Download the games from [Lichess](https://database.lichess.org/) between January 2017 and November 2019 to `data/lichess_raw`
-3. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh` - make sure you have 
+3. (Optional) For simplicity - Give the entire directory running permissions `chmod -R +x directory_name`   
+4. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/conver-zst.sh` - make sure you have 
 packages `bzip2` and `zstd`.
 you will be left with both .pgn.zst and .bz2 files, you cant store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
-2. Run `move_prediction/replication-generate_pgns.sh`
-3. Run `move_prediction/replication-make_leela_files.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
+5. Run `move_prediction/replication-generate_pgns.sh`
+6. Run `move_prediction/replication-make_leela_files.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
 wont see anything on the screen and it might appear stuck, if you wish to view a ceratin screen and how its working, open a new terminal and type the name of the screen with the command `screen -r <"screen name">`.
 You can see how screen names are defined in the scripts.
 Make sure you dont press `Ctrl + c` if you open a new terminal to view a screen because it will simply terminate it. Flow control has been emplaced so you dont need to worry and the program will continue running the next commands once the screens have finished.
-4. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
+7. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
    1. input_test : `../data/elo_ranges/${elo}/test/*/*`
    2. output_train : `../data/elo_ranges/${elo}/train/*/*`
    3. make sure that you write the full path and not the relative path, because it creates problems depending from where you run the python script,
       so for example: ```
                      /home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*
                      ```
-5. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
-6. (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` example:
+8. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
+9. (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` example:
  ```bash
    tensorboard --logdir=runs
 ```
