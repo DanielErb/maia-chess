@@ -112,21 +112,30 @@ see which one need executing/reading writing permissions).
 4. The downloaded games from `Lichess` are .pgz.zst format, code wasn't updated in years and still relies on the old format of .bz2 so you will need to run `move_prediction/convert-zst.sh` - make sure you have 
 packages `bzip2` and `zstd`.
 you will be left with both .pgn.zst and .bz2 files, you can store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
-5. Run `move_prediction/replication-generate_pgns.sh`
-   1. (optional) - If you wish to run Maia on other data rather than 2017-2019, you will need to modify `move_prediction/replication-generate_pgns.sh` and `move_prediction/replication-move_training_set.py`.
-6. Run `move_prediction/replication-make_leela_files-fixed.sh` - note that both scripts use screens, meaning all of the work that is able to be done parallaraly is done so - this means you
-wont see anything on the screen and it might appear stuck, if you wish to view a ceratin screen and how its working, open a new terminal and type the name of the screen with the command `screen -r <"screen name">`.
-You can see how screen names are defined in the scripts.
-Make sure you dont press `Ctrl + c` if you open a new terminal to view a screen because it will simply terminate it. Flow control has been emplaced so you dont need to worry and the program will continue running the next commands once the screens have finished.
-7. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
+5. Run `move_prediction/create_trainingFolders.sh`.
+6. Run `move_prediction/replication-generate_pgns-(1..4).sh`
+   1. (optional) - If you wish to run Maia on other data rather than 2017-2019, you will need to modify `move_prediction/replication-generate_pgns-(1..4).sh`.
+   2. Note that the script was split into actually 4 scripts so that if you are working with slurm you could submit multiple jobs - if you are working in a home environemnt and don't need such fact computability you can run only 1 of
+      them and change the elo ranges of the loop.
+7. Run `move_prediction/replication-move_training_set.py`.
+   1. (optional) - in relation to 6.1, if you are running on different data rather then the one we tested on you will need to modify the file - currently it take september 2019 - november 2019 and from them constructs
+      the test file. If you wish to this manually there is another option in section 8.2.
+8. Run `move_prediction/replication-make_leela_files-(1..4).sh`.
+   1. (optional) same as in 6.1 - change elo ranges if you wish to run only one script
+   2. (optional) if you haven't downloaded septeber 2019 - november 2019 and didnt modify the script in 7 you can manually get the test files -
+      for example, in the end you will have all the train files for specific elo here `data/elo_ranges/{elo}/train/{train directories}/supervised-0/`,
+      in order to train maia for a spesific elo you will need both train file and test files, you will need to copy manually some file form the train files which i mentioned,
+      and copy at least 10 of them to `data/elo_ranges/{elo}/test/{1-3.pgn}/supervised-0/` - noted that this option is not recommended because it creates a mix up between train and test files, but if you just wish
+      to test the maia training process this is the best option.
+9. Edit `move_prediction/maia_config.yml` and add the elo you want to train:
    1. input_test : `../data/elo_ranges/${elo}/test/*/*`
    2. output_train : `../data/elo_ranges/${elo}/train/*/*`
    3. make sure that you write the full path and not the relative path, because it creates problems depending from where you run the python script,
       so for example: ```
                      /home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*
                      ```
-8. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
-9. (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` example:
+10. Run the training script `move_prediction/train_maia.py PATH_TO_CONFIG`
+11. (optional) You can use tensorboard to watch the training progress, the logs are in `runs/CONFIG_BASENAME/` example:
  ```bash
    tensorboard --logdir=runs
 ```
