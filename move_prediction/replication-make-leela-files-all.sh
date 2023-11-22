@@ -1,10 +1,12 @@
-
 #!/bin/bash
+
+start=1100
+end=1900
+jump=400
+#jump=100
 
 cd "$(dirname "$0")"
 echo "Current working directory: $(pwd)"
-
-
 
 process_elo() {
     elo=$1
@@ -41,7 +43,6 @@ process_elo() {
 
 # Using parallel for post-loop processing
 export -f process_elo
-parallel process_elo ::: {1100..1900..400}
-#parallel process_elo ::: {1100..1900..100}
+parallel process_elo ::: $(seq $start $jump $end)
 
 echo "Current working directory: $(pwd)"

@@ -1,12 +1,18 @@
 #!/bin/bash
 
+start=1100
+end=1900
+jump=400
+#jump=100
+
+
 #fix - the code doesnt start in its own directory
 cd "$(dirname "$0")"
 
 echo "Current working directory: $(pwd)"
 
 mkdir ../data/pgns_ranged_filtered/
-for i in {1000..2000..100}; do
+for i in $(seq $start $jump $end); do
     echo $i
     outputdir="../data/pgns_ranged_filtered/${i}"
     mkdir $outputdir
@@ -14,7 +20,7 @@ done
 
 
 mkdir ../data/pgns_ranged_blocks
-for i in {1000..2000..100}; do
+for i in $(seq $start $jump $end); do
     echo $i
     cw=`pwd`
     outputdir="../data/pgns_ranged_blocks/${i}"

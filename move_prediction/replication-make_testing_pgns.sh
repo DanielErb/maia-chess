@@ -1,10 +1,11 @@
 #!/bin/bash
 
-#Read the raw pgns from lichess and filter out the elo ranges we care about to make our validation set
 start=1100
 end=1900
 jump=400
 #jump=100
+
+#Read the raw pgns from lichess and filter out the elo ranges we care about to make our validation set
 
 mkdir ../data/pgns_traj_testing/
 for i in $(seq $start $jump $end); do

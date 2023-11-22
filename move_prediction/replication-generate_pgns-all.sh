@@ -1,5 +1,11 @@
 #!/bin/bash
 
+start=1100
+end=1900
+jump=400
+#jump=100
+
+
 # Fix - the code doesn't start in its own directory
 cd "$(dirname "$0")"
 
@@ -26,8 +32,7 @@ filter_elo_range() {
 
 # Use parallel to filter Elo ranges concurrently
 export -f filter_elo_range
-parallel filter_elo_range ::: {1100..1900..400}
-#parallel filter_elo_range ::: {1100..1900..100}
+parallel filter_elo_range ::: $(seq $start $jump $end)
 
 
 echo "Done filtering"
@@ -56,7 +61,6 @@ run_pgn_extract() {
 
 # Use parallel to run pgn-extract concurrently
 export -f run_pgn_extract
-parallel run_pgn_extract ::: {1100..1900..400}
-#parallel run_pgn_extract ::: {1100..1900..100}
+parallel run_pgn_extract ::: $(seq $start $jump $end)
 
 echo "Done pgn-extract"
