@@ -3,8 +3,8 @@
 gpu: 0
 
 dataset:
-  input_train: '/home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/train/*/*' # This uses glob so training/*/* is probably the end
-  input_test: '/home/daniel/Documents/Maia/maia-chess/data/elo_ranges/1400/test/*' # This uses glob so validate/*/* is probably the end
+  input_train: '~/repos/maia-chess/data/elo_ranges/1400/train/*/*' # This uses glob so training/*/* is probably the end
+  input_test: '~/repos/maia-chess/data/elo_ranges/1400/test/*/*' # This uses glob so validate/*/* is probably the end
 
 training:
     precision: 'half'
