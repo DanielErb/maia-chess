@@ -1,9 +1,8 @@
 #!/bin/bash
 
-start=1100
-end=1900
-jump=400
-#jump=100
+start=${1:-1100}
+end=${2:-1900}
+jump=${3:-100}
 
 #Read the raw pgns from lichess and filter out the elo ranges we care about to make our validation set
 

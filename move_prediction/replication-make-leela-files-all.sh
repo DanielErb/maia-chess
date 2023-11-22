@@ -1,9 +1,8 @@
 #!/bin/bash
 
-start=1100
-end=1900
-jump=400
-#jump=100
+start=${1:-1100}
+end=${2:-1900}
+jump=${3:-100}
 
 cd "$(dirname "$0")"
 echo "Current working directory: $(pwd)"

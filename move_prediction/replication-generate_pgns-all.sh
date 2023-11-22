@@ -1,10 +1,8 @@
 #!/bin/bash
 
-start=1100
-end=1900
-jump=400
-#jump=100
-
+start=${1:-1100}
+end=${2:-1900}
+jump=${3:-100}
 
 # Fix - the code doesn't start in its own directory
 cd "$(dirname "$0")"
