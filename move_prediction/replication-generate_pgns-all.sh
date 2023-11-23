@@ -20,12 +20,14 @@ filter_elo_range() {
     upperval=$(($elo + 100))
     outputdir="../data/pgns_ranged_filtered/${elo}"
     for f in ../data/lichess_raw/lichess_db_standard_rated_2017* ../data/lichess_raw/lichess_db_standard_rated_2018* ../data/lichess_raw/lichess_db_standard_rated_2019-{01..11}.pgn.bz2; do
-        fname="$(basename -- $f)"
-        echo "${elo}-${fname}"
-        source ~/.bashrc
-        python3 ../data_generators/extractELOrange.py --remove_bullet --remove_low_time ${elo} ${upperval} ${outputdir}/${fname} ${f}
+        t=$(echo $f | tail -c 5)
+        if [ $t == ".bz2" ]; then # Verify that we have something in this year
+            fname="$(basename -- $f)"
+            echo "${elo}-${fname}"
+            source ~/.bashrc
+            python3 ../data_generators/extractELOrange.py --remove_bullet --remove_low_time ${elo} ${upperval} ${outputdir}/${fname} ${f}
+        fi
     done
-
 }
 
 # Use parallel to filter Elo ranges concurrently
@@ -45,7 +47,7 @@ run_pgn_extract() {
     elo=$1
     outputdir="../data/pgns_ranged_blocks/${elo}"
 
-    for y in 2017 2019; do
+    for y in {2017..2019}; do
         cw=`pwd`
         echo "current working directory - ${cw}"
         echo "${elo}-${y}"
