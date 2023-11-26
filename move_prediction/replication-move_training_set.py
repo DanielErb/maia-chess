@@ -26,17 +26,24 @@ def main():
         os.makedirs(train_path, exist_ok = True)
         test_path = os.path.join(test_dir, elo.name)
         os.makedirs(test_path, exist_ok = True)
+        # print("test_path: ", test_path)
         count_train = 0
         num_missing = 0
         count = 0
         for year in sorted(os.scandir(elo.path), key = lambda x : x.name):
+            # print(f"year: {year.path}")
             #targets = sorted(os.scandir(year.path), key = lambda x : int(x.name.split('.')[0]))[:-1] for some unexpected reason, they excluded the last item and just didnt do anything with it
             targets = sorted(os.scandir(year.path), key = lambda x : int(x.name.split('.')[0]))
-            print(targets)
+            # print(f"targets: {targets}")
             if year.name == '2019':
+                # print("2019")
+                # print("targets[-3:]: ", targets[-3:])
+                # print("targets[:-3]: ", targets[:-3])
                 for i, t in enumerate(targets[-3:]):
                     shutil.copy(t.path, os.path.join(test_path, f"{i+1}.pgn"))
                 targets = targets[:-3]
+            # else:
+            #     continue
             random.shuffle(targets)
             for t in targets[:target_per_year + num_missing]:
                 count_train += 1

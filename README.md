@@ -113,16 +113,12 @@ see which one need executing/reading writing permissions).
 packages `bzip2` and `zstd`.
 you will be left with both .pgn.zst and .bz2 files, you can store the .pgn.zst files in another directory for future use but **_DO NOT_ keep them in `data/lichess_raw`**
 5. Run `move_prediction/create_trainingFolders.sh`.
-6. Run `move_prediction/replication-generate_pgns-(1..4).sh`
-   1. (optional) - If you wish to run Maia on other data rather than 2017-2019, you will need to modify `move_prediction/replication-generate_pgns-(1..4).sh`.
-   2. Note that the script was split into actually 4 scripts so that if you are working with slurm you could submit multiple jobs - if you are working in a home environemnt and don't need such fact computability you can run only 1 of
-      them and change the elo ranges of the loop.
+6. Run `move_prediction/replication-generate_pgns-all.sh <elo-start> <elo-end> <elo-step>`. For example, to run from elo 1100 to 1900 in steps of 100: `move_prediction/replication-generate_pgns-all.sh 1100 1900 100`.
 7. Run `move_prediction/replication-move_training_set.py`.
    1. (optional) - in relation to 6.1, if you are running on different data rather then the one we tested on you will need to modify the file - currently it take september 2019 - november 2019 and from them constructs
       the test file. If you wish to this manually there is another option in section 8.2.
-8. Run `move_prediction/replication-make_leela_files-(1..4).sh`.
-   1. (optional) same as in 6.1 - change elo ranges if you wish to run only one script
-   2. (optional) if you haven't downloaded septeber 2019 - november 2019 and didnt modify the script in 7 you can manually get the test files -
+8. Run `move_prediction/replication-make-leela-files-all.sh <elo-start> <elo-end> <elo-step>`. For example, to run from elo 1100 to 1900 in steps of 100: `move_prediction/replication-make-leela-files-all.sh 1100 1900 100`.
+   * (optional) if you haven't downloaded septeber 2019 - november 2019 and didnt modify the script in 7 you can manually get the test files -
       for example, in the end you will have all the train files for specific elo here `data/elo_ranges/{elo}/train/{train directories}/supervised-0/`,
       in order to train maia for a spesific elo you will need both train file and test files, you will need to copy manually some file form the train files which i mentioned,
       and copy at least 10 of them to `data/elo_ranges/{elo}/test/{1-3.pgn}/supervised-0/` - noted that this option is not recommended because it creates a mix up between train and test files, but if you just wish
