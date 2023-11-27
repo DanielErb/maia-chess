@@ -1,11 +1,10 @@
-numpy
 python-chess
 pytz
 humanize
 tensorboard
-tensorflow
-protobuf
+tensorflow[and-cuda]
 tensorboardx
+protobuf
 seaborn
 matplotlib
 pyyaml
