@@ -21,7 +21,7 @@ def main():
     parser.add_argument('output', help='output dir')
     parser.add_argument('--nrows', type=int, help='number of rows to read in', default = None)
     parser.add_argument('--lc0_depth', type=int, help='Number of rollouts/nodes for lc0 engines', default = None)
-    parser.add_argument('--pool_size', type=int, help='Number of models to run in parallel', default = 64)
+    parser.add_argument('--pool_size', type=int, help='Number of models to run in parallel', default = 10)
     parser.add_argument('--queueSize', type=int, help='Max number of games to cache', default = 1000)
     parser.add_argument('--multipv', type=int, help='Number of potetial boards to consider', default = None)
     parser.add_argument('--no_hist', help='Disable history', action = 'store_true')
@@ -44,6 +44,18 @@ def main():
 def runModel(model_path, manager, pool, pool_size, queueSize, data_path, output_dir, nrows, lc0_depth, multipv, no_hist):
     unproccessedQueue = manager.Queue(queueSize)
     resultsQueue = manager.Queue(queueSize)
+    
+    """""
+    with bz2.open(data_path, 'rt') as fin:
+        reader = csv.DictReader(fin)
+        board = chess.Board()
+        current_game = None
+        for i, row in enumerate(reader):
+            line_count = i
+            if i % 1000000 == 0:
+                maia_chess_backend.printWithDate(f"row {i}")
+    maia_chess_backend.printWithDate(f"Total lines in data_path {data_path}: {line_count}")
+    """""
 
     try:
         model, config = maia_chess_backend.load_model_config(model_path, lc0_depth = lc0_depth)
@@ -70,10 +82,15 @@ def runModel(model_path, manager, pool, pool_size, queueSize, data_path, output_
             if no_hist or row['game_id'] != current_game:
                 current_game = row['game_id']
                 board = chess.Board(fen = row['board'])
+            if row['white_active'] == 'True':
+                elo_to_write = 'white_elo'
+            else:
+                elo_to_write = 'black_elo'
             unproccessedQueue.put((board, {
                             'game_id' : row['game_id'],
                             'move_ply' : row['move_ply'],
                             'move' : row['move'],
+                            'elo' : row[elo_to_write],            
                             }
                         ))
             try:
@@ -129,12 +146,12 @@ def writerWorker(outputFile, inputQueue, num_readers, name, display_name, rl_dep
     num_kill_remaining = num_readers
     with bz2.open(outputFile, 'wt') as f:
         if multipv is None:
-            writer = csv.DictWriter(f, ['game_id', 'move_ply', 'player_move', 'model_move', 'model_cp', 'model_correct', 'model_name', 'model_display_name', 'rl_depth'])
+            writer = csv.DictWriter(f, ['game_id', 'move_ply', 'elo', 'player_move', 'model_move', 'model_cp', 'model_correct', 'model_name', 'model_display_name', 'rl_depth'])
         else:
             moveheader = []
             for i in range(multipv):
                 moveheader+= [f'model_move_{i}', f'model_cp_{i}']
-            writer = csv.DictWriter(f, ['game_id', 'move_ply', 'player_move', 'model_correct', 'model_name', 'model_display_name', 'rl_depth'] + moveheader)
+            writer = csv.DictWriter(f, ['game_id', 'move_ply', 'elo', 'player_move', 'model_correct', 'model_name', 'model_display_name', 'rl_depth'] + moveheader)
         writer.writeheader()
         while True:
             dat = inputQueue.get()
@@ -147,6 +164,7 @@ def writerWorker(outputFile, inputQueue, num_readers, name, display_name, rl_dep
                 write_dict = {
                     'game_id' : row['game_id'],
                     'move_ply' : row['move_ply'],
+                    'elo' : row['elo'],
                     'player_move' : row['move'],
                     'model_correct' : row['move'] == m_move,
                     'model_name' : name,
