@@ -117,6 +117,8 @@ you will be left with both .pgn.zst and .bz2 files, you can store the .pgn.zst f
 7. Run `move_prediction/replication-move_training_set.py`.
    1. (optional) - in relation to 6.1, if you are running on different data rather then the one we tested on you will need to modify the file - currently it take september 2019 - november 2019 and from them constructs
       the test file. If you wish to this manually there is another option in section 8.2.
+(optional) - Run `move_prediction/generate-cut_games.sh <elo-start> <elo-end> <elo-step>` - this code discards games that have less then 20 moves or didnt end in checkmate, it also cuts games to the last 20 moves if it didnt have 2 castling moves, or 
+if it did, then till the last castling move.
 8. Run `move_prediction/replication-make-leela-files-all.sh <elo-start> <elo-end> <elo-step>`. For example, to run from elo 1100 to 1900 in steps of 100: `move_prediction/replication-make-leela-files-all.sh 1100 1900 100`.
    * (optional) if you haven't downloaded septeber 2019 - november 2019 and didnt modify the script in 7 you can manually get the test files -
       for example, in the end you will have all the train files for specific elo here `data/elo_ranges/{elo}/train/{train directories}/supervised-0/`,
@@ -138,6 +140,7 @@ you will be left with both .pgn.zst and .bz2 files, you can store the .pgn.zst f
 We also include some other (but not all) config files that we tested. Although, we still recommend using the final config `move_prediction/maia_config.yml`.
 
 If you wish to generate the testing set we used you can download the December 2019 data and run `move_prediction/replication-make_testing_pgns.sh`. The data is also avaible for download as a CSV [here](http://csslab.cs.toronto.edu/data/chess/kdd/maia-chess-testing-set.csv.bz2). The script for running models on the dataset is [`replication-run_model_on_csv.py`](move_prediction/replication-run_model_on_csv.py) and requires the `lc0` binary on the path.
+After you've ran the code, you can use `move_predicition/plot_graph.py` to plot a graph based on the csv you got after running the code.
 
 ### Blunder Prediction
 
