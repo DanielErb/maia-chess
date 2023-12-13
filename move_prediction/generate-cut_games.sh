@@ -17,19 +17,8 @@ process_elo() {
     mkdir -p $outputtest
     mkdir -p $outputtrain
 
-    for te in "../data/pgns_ranged_training/${elo}"/*; do
-        fname="$(basename -- $te)"
-        echo "${elo}-${fname}"
-        current_dir=$(pwd)
-        python3 cut_games.py ../data/pgns_ranged_training/${elo} ${outputtrain}
-    done
-
-    for te in "../data/pgns_ranged_testing/${elo}"/{1..3}.pgn; do
-        fname="$(basename -- $te)"
-        echo "${elo}-${fname}"
-        current_dir=$(pwd)
-        python3 cut_games.py ../data/pgns_ranged_testing/${elo} ${outputtest}
-    done
+    python3 cut_games.py ../data/pgns_ranged_training/${elo} ${outputtrain}
+    python3 cut_games.py ../data/pgns_ranged_testing/${elo} ${outputtest}
 
 }
 
