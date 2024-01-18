@@ -34,6 +34,8 @@ def main():
                     continue
                 elif args.remove_bullet and 'Bullet' in dat['Event']:
                     continue
+                elif dat['Termination'] == "Time forfeit":
+                    continue
                 else:
                     if args.remove_low_time:
                         f.write(maia_chess_backend.remove_low_time(lines))
