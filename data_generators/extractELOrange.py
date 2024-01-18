@@ -8,6 +8,7 @@ import bz2
 
 @maia_chess_backend.logged_main
 def main():
+    print("Script started")
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('eloMin', type=int, help='min ELO')
     parser.add_argument('eloMax', type=int, help='max ELO')
@@ -36,6 +37,8 @@ def main():
                 elif dat['Result']  not in ['1-0', '0-1', '1/2-1/2']:
                     continue
                 elif args.remove_bullet and 'Bullet' in dat['Event']:
+                    continue
+                elif dat['Termination'] == "Time forfeit":
                     continue
                 else:
                     if args.remove_low_time:
